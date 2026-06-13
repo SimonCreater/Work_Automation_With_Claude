@@ -1,0 +1,15 @@
+{
+  "artifact": "use-cases",
+  "match": "03-use-cases",
+  "required_sections": [],
+  "rules": [
+    { "id": "no-placeholders", "type": "no_placeholders" },
+    { "id": "min-use-cases", "type": "min_pattern_count", "pattern": "(?m)^##\\s*UC-\\d+", "min": 2, "message": "유스케이스(## UC-n)가 최소 2건 필요합니다." },
+    { "id": "has-actor", "type": "min_pattern_count", "pattern": "Primary Actor", "min": 2, "message": "각 유스케이스에 Primary Actor가 필요합니다 (최소 2건)." },
+    { "id": "has-trigger", "type": "min_pattern_count", "pattern": "Trigger", "min": 2, "message": "각 유스케이스에 Trigger가 필요합니다." },
+    { "id": "has-precondition", "type": "min_pattern_count", "pattern": "Preconditions", "min": 2, "message": "각 유스케이스에 Preconditions가 필요합니다." },
+    { "id": "has-postcondition", "type": "min_pattern_count", "pattern": "Postconditions", "min": 2, "message": "각 유스케이스에 Postconditions가 필요합니다." },
+    { "id": "has-normal-flow", "type": "min_pattern_count", "pattern": "Normal Flow", "min": 2, "message": "각 유스케이스에 Normal Flow(정상 흐름)가 필요합니다." },
+    { "id": "has-exception-flow", "type": "min_pattern_count", "pattern": "Alternate / Exception Flow", "min": 2, "message": "각 유스케이스에 대안/예외 흐름이 반드시 필요합니다 (정상 흐름만 있으면 안 됨)." }
+  ]
+}

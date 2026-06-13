@@ -1,0 +1,17 @@
+{
+  "artifact": "system-request",
+  "match": "01-system-request",
+  "required_sections": [
+    "## 프로젝트명",
+    "## 후원자",
+    "## 비즈니스 니즈",
+    "## 기대 가치",
+    "## 제약",
+    "## 범위"
+  ],
+  "rules": [
+    { "id": "no-placeholders", "type": "no_placeholders" },
+    { "id": "scope-in-out", "type": "must_contain", "pattern": "포함 \\(In Scope\\)", "message": "범위에 '포함 (In Scope)' 하위 섹션이 필요합니다." },
+    { "id": "scope-out", "type": "must_contain", "pattern": "제외 \\(Out of Scope\\)", "message": "범위에 '제외 (Out of Scope)' 하위 섹션이 필요합니다." }
+  ]
+}

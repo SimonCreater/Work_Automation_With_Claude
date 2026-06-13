@@ -1,0 +1,7 @@
+# 저작권 있는 교재·강의 자료는 public repo에 올리지 않는다
+*.pdf
+
+# OS / 에디터
+.DS_Store
+*.swp
+__pycache__/

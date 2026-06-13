@@ -1,0 +1,14 @@
+{
+  "artifact": "adr",
+  "match": "06-adr",
+  "required_sections": [],
+  "rules": [
+    { "id": "no-placeholders", "type": "no_placeholders" },
+    { "id": "min-adr", "type": "min_pattern_count", "pattern": "(?m)^##\\s*ADR-\\d+", "min": 2, "message": "ADR이 최소 2건 필요합니다." },
+    { "id": "has-context", "type": "min_pattern_count", "pattern": "맥락 \\(Context\\)", "min": 2, "message": "각 ADR에 맥락(Context)이 필요합니다." },
+    { "id": "has-decision", "type": "min_pattern_count", "pattern": "결정 \\(Decision\\)", "min": 2, "message": "각 ADR에 결정(Decision)이 필요합니다." },
+    { "id": "has-rationale", "type": "min_pattern_count", "pattern": "근거 \\(Rationale\\)", "min": 2, "message": "각 ADR에 근거(Rationale)가 필요합니다." },
+    { "id": "has-consequences", "type": "min_pattern_count", "pattern": "결과 \\(Consequences\\)", "min": 2, "message": "각 ADR에 결과(Consequences)가 필요합니다." },
+    { "id": "has-rejected", "type": "must_contain", "pattern": "하지 않기로", "message": "최소 1건은 '하지 않기로 한 결정'이어야 합니다." }
+  ]
+}

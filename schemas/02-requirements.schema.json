@@ -1,0 +1,13 @@
+{
+  "artifact": "requirements",
+  "match": "02-requirements",
+  "required_sections": [
+    "## 기능 요구사항",
+    "## 비기능 요구사항"
+  ],
+  "rules": [
+    { "id": "no-placeholders", "type": "no_placeholders" },
+    { "id": "min-functional", "type": "min_pattern_count", "pattern": "\\|\\s*FR-\\d+\\s*\\|", "min": 2, "message": "기능 요구사항(FR-n)이 최소 2건 필요합니다." },
+    { "id": "min-nonfunctional", "type": "min_pattern_count", "pattern": "\\|\\s*NFR-\\d+\\s*\\|", "min": 1, "message": "비기능 요구사항(NFR-n)이 최소 1건 필요합니다." }
+  ]
+}
