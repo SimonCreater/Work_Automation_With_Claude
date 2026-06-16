@@ -5,3 +5,6 @@
 .DS_Store
 *.swp
 __pycache__/
+
+# 로컬 툴링 상태 (oh-my-claudecode 등)
+.omc/

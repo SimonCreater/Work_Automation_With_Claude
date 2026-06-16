@@ -1,11 +1,44 @@
 # Spec-Driven 분석·설계 하네스
 
+[![validate-artifacts](https://github.com/SimonCreater/Work_Automation_With_Claude/actions/workflows/validate.yml/badge.svg)](https://github.com/SimonCreater/Work_Automation_With_Claude/actions/workflows/validate.yml)
+
 **아이디어 한 문단**만 가진 사용자와 에이전트가 협의(인터뷰)하여, 시스템 분석·설계
 산출물을 **단계별 승인 게이트**를 거쳐 생성하고, **기계적으로 검증**하는 재사용 가능한 하네스입니다.
 특정 도메인에 하드코딩되어 있지 않아, 어떤 아이디어에도 수정 없이 동작합니다.
 
 > GitHub Spec Kit / AWS Kiro 같은 Spec-Driven Development 도구의 아이디어를,
 > 표준 분석·설계 산출물(유스케이스·DFD·ERD)에 맞춰 구현했습니다.
+
+---
+
+## 평가자 안내 (채점 매핑)
+
+> 각 평가 항목의 증적이 **어느 파일에 있는지** 바로 찾을 수 있도록 정리했습니다.
+> R3(기계적 검증)은 아래 한 줄로 **직접 재현**할 수 있습니다:
+> ```bash
+> bash scripts/selftest.sh      # demo 산출물 18종 통과 + 고의 결함 1건 차단(exit 2) 재현
+> ```
+
+| 평가 항목 | 증적 위치 |
+|---|---|
+| **R1** 에이전트가 먼저 묻는다 | [`demo/run1-equity-research/00-session-log.md`](demo/run1-equity-research/00-session-log.md) — 매 단계 에이전트 선질문 축어 기록 |
+| **R2** 단계별 생성 + 승인 게이트 | 같은 로그의 S1~S6 각 끝 `[승인 게이트]` → 사용자 `승인` 교환 (6회) |
+| **R3** 기계적 검증 (실패→자가수정 포함) | 같은 로그 **S3** — 훅 stderr 원문(예외흐름 누락 차단) → 수정 → 통과. 재현: `scripts/selftest.sh`, CI: [`.github/workflows/validate.yml`](.github/workflows/validate.yml) |
+| **R4** 재사용성 | 하네스 무수정으로 3개 도메인 재적용(run1 주식 / run2 헬스장 / run3 여신) + [`demo/run2-gym-pt/99-retrospective.md`](demo/run2-gym-pt/99-retrospective.md) 회고 |
+| **산출물 5종** | `demo/run1-equity-research/01~06` (요청서·요구사항·유스케이스·DFD·ADR + **보너스 ERD**) |
+| **ADR("하지 않기로 한 결정")** | [`demo/run1-equity-research/06-adr.md`](demo/run1-equity-research/06-adr.md) — 목표주가 자동산정 제외 |
+
+### 이론 ↔ 구현 매핑 (이론 + 실습)
+
+산출물과 **검증 규칙**을 수업 이론에 1:1로 앵커링했습니다. 검증기는 형식뿐 아니라
+각 이론의 핵심 규칙(예: 유스케이스는 예외 흐름 필수)을 기계적으로 강제합니다.
+
+| 산출물 / 검증 규칙 | 이론 개념 | 교재 |
+|---|---|---|
+| 유스케이스 — **예외/대안 흐름 필수**, 액터·트리거·사전/사후조건 | 유스케이스·시나리오 모델링 | ch04 |
+| DFD — 컨텍스트+Level 0, 프로세스(동사구)·외부엔티티·데이터 스토어 | 프로세스 모델링(DFD) | ch05 |
+| ERD — 엔티티·PK·카디널리티, **DFD 데이터 스토어와 대응** | 데이터 모델링(ERD) | ch06 |
+| 시스템 요청서·요구사항(검증 가능 서술)·ADR | 분석 단계 산출물 / 설계 의사결정 기록 | 강의 전반 |
 
 ---
 
@@ -81,6 +114,9 @@ GitHub에서 바로 렌더링됩니다.
 templates/                  # 산출물 6종 템플릿 (도메인 비종속)
 schemas/                    # 산출물별 검증 스키마 (JSON)
 scripts/validate.py         # 자동화② 검증기 (표준 라이브러리만 사용)
+scripts/selftest.sh         # R3 재현 셀프테스트 (양성 18 + 음성 1)
+scripts/fixtures/           # 음성 테스트용 고의 결함 산출물
+.github/workflows/          # CI: push마다 검증 셀프테스트 자동 실행
 demo/
   run1-equity-research/     # 아이디어①(주식 리서치): 세션 로그 + 산출물 6종
   run2-gym-pt/              # 아이디어②(헬스장 PT): 무수정 재적용 + 회고
@@ -104,10 +140,19 @@ demo/
 
 전체 세션 흐름은 [`demo/run3-credit-memo/00-session-log.md`](demo/run3-credit-memo/00-session-log.md)에서 볼 수 있습니다.
 
-## 검증기 단독 실행
+## 검증기 단독 실행 / R3 재현
 
 훅 없이도 산출물을 직접 검사할 수 있습니다:
 ```bash
 python3 scripts/validate.py demo/run1-equity-research/03-use-cases.md
 ```
 위반이 있으면 항목을 출력하고 종료 코드 2로 끝납니다.
+
+R3(기계적 검증)이 실제로 동작함을 **한 번에 재현**하려면:
+```bash
+bash scripts/selftest.sh
+```
+- **양성 테스트**: `demo/` 산출물 18종이 전부 검증을 통과(exit 0)
+- **음성 테스트**: 고의로 예외 흐름을 뺀 산출물(`scripts/fixtures/bad-03-use-cases.md`)이 검증에 차단(exit 2)
+
+이 셀프테스트는 push마다 GitHub Actions로도 자동 실행됩니다(상단 배지).

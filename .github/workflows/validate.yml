@@ -1,0 +1,21 @@
+name: validate-artifacts
+
+# R3(기계적 검증)이 "주장"이 아니라 "재현 가능한 사실"임을 보인다.
+# push/PR 마다 검증 셀프테스트를 돌려, demo/ 산출물 전부가 스키마를 준수하고
+# 고의 결함 산출물은 차단되는지 자동으로 확인한다.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  r3-selftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: R3 기계적 검증 셀프테스트 (양성 18 + 음성 1)
+        run: bash scripts/selftest.sh
